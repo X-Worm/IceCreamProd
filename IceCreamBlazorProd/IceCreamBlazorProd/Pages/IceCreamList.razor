@@ -1,0 +1,66 @@
+﻿@page "/iceCreams"
+@using IceCreamBlazorProd.Data;
+@inject IceCreamService iceService;
+
+
+<h3>Ice Creams Info</h3>
+
+<br />
+
+<NavLink class="nav-link" id="AddIceCream" href="AddIceCream">
+    <span class="oi oi-plus"></span>Add New ice cream
+</NavLink>
+
+<br />
+
+@if (iceList == null)
+{
+    <p><em>Loading ...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IceCream ID</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Production start date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var iceCream in iceList)
+            {
+                <tr>
+                    <td id="table iceCream-@iceCream.IceCreamId">@iceCream.IceCreamId</td>
+                    <td>@iceCream.Name</td>
+                    <td>@iceCream.Amount</td>
+                    <td>@iceCream.Price</td>
+                    <td>@iceCream.productStartDate</td>
+                    <td>@iceCream.Description</td>
+                    <td>
+                        <a class="nav-link" href="EditIceCream/@iceCream.IceCreamId">
+                            <span class="oi oi-pencil" aria-hidden="true"></span>Edit
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link" id="DeleteIceCream-@iceCream.IceCreamId" href="DeleteIceCream/@iceCream.IceCreamId">
+                            <span class="oi oi-trash" aria-hidden="true"></span>Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<IceCreamBlazorProd.Data.IceCream> iceList;
+    protected override async Task OnInitializedAsync()
+    {
+        iceList = await Task.Run(() => iceService.Get());
+    }
+}

@@ -1,0 +1,61 @@
+﻿@page "/AddIceCream"
+@using IceCreamBlazorProd.Data
+@inject IceCreamService iceService;
+@inject NavigationManager navManager
+
+<h2>Add IceCream</h2>
+<hr />
+
+<EditForm Model="@ice" OnValidSubmit="CreateIceCream">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="custom-control-label">Name</label>
+                <InputText form="Name" id="Name"  class="form-control" @bind-Value="@ice.Name" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="Amount"  class="custom-control-label">Amount</label>
+                <InputNumber form="Amount" id="Amount" class="form-control" @bind-Value="@ice.Amount" />
+            </div>
+
+            <div class="form-group">
+                <label for="Price"  class="custom-control-label">Price</label>
+                <InputNumber form="Price" id="Price" class="form-control" @bind-Value="@ice.Price" />
+            </div>
+
+            <div class="form-group">
+                <label for="Description"  class="custom-control-label">Description</label>
+                <InputText form="Description" id="Description" class="form-control" @bind-Value="@ice.Description" />
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" id="IceCreamSave" class="btn btn-primary" @onclick="@CreateIceCream" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    IceCreamBlazorProd.Data.IceCream ice = new IceCreamBlazorProd.Data.IceCream();
+
+    protected void CreateIceCream()
+    {
+        ice.productStartDate = DateTime.UtcNow;
+        iceService.Create(ice);
+        navManager.NavigateTo("iceCreams");
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("iceCreams");
+    }
+
+}

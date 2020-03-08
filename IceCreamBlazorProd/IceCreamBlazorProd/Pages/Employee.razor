@@ -1,0 +1,67 @@
+﻿@page "/employees"
+@using IceCreamBlazorProd.Data;
+@inject EmployeesService empService;
+
+<h3>Employees Info</h3>
+
+<br />
+
+<NavLink class="nav-link" id="AddEmployee" href="AddEmployee">
+    <span class="oi oi-plus"></span>Add New employee
+</NavLink>
+
+<br />
+
+@if(empList == null)
+{
+    <p><em>Loading ...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Age</th>
+                <th>Position</th>
+                <th>Salary</th>
+                <th>BirthDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var emp in empList)
+            {
+            <tr>
+                <td>@emp.EmployeeId</td>
+                <td>@emp.Name</td>
+                <td>@emp.LastName</td>
+                <td>@emp.Age</td>
+                <td>@emp.Position</td>
+                <td>@emp.Salary</td>
+                <td>@emp.BirthDate.ToShortDateString()</td>
+                <td>
+                    <a class="nav-link" href="EditEmployee/@emp.EmployeeId">
+                        <span class="oi oi-pencil" aria-hidden="true"></span>Edit
+                    </a>
+                </td>
+                <td>
+                    <a class="nav-link" href="DeleteEmployee/@emp.EmployeeId">
+                        <span class="oi oi-trash" aria-hidden="true"></span>Delete
+                    </a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<IceCreamBlazorProd.Data.Employee> empList;
+    protected override async Task OnInitializedAsync()
+    {
+        empList = await Task.Run(() => empService.GetEmployees());
+    }
+}

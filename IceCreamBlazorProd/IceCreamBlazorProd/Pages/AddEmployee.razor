@@ -1,0 +1,70 @@
+﻿@page "/AddEmployee"
+@using IceCreamBlazorProd.Data
+@inject EmployeesService empService;
+@inject NavigationManager navManager
+
+<h2>Add Employee</h2>
+<hr />
+
+<EditForm Model="@emp" OnValidSubmit="CreateEmployee">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="custom-control-label">Name</label>
+                <InputText form="Name" id="NameInput" class="form-control" @bind-Value="@emp.Name" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="LastName" class="custom-control-label">Last Name</label>
+                <InputText form="LastName" id="LastName" class="form-control" @bind-Value="@emp.LastName" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="Age" class="custom-control-label">Age</label>
+                <InputNumber form="Age" id="Age" class="form-control" @bind-Value="@emp.Age" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="Position" class="custom-control-label">Position</label>
+                <InputText form="Position" id="Position" class="form-control" @bind-Value="@emp.Position" />
+            </div>
+
+            <div class="form-group">
+                <label for="Salary" class="custom-control-label">Salary</label>
+                <InputNumber form="Salary" id="Salary" class="form-control" @bind-Value="@emp.Salary" />
+            </div>
+
+            <div class="form-group">
+                <label for="BirthDate" class="custom-control-label">Birth date</label>
+                <InputDate form="BirthDate" id="BirthDate" class="form-control" @bind-Value="@emp.BirthDate" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" id="EmployeeSave" @onclick="@CreateEmployee" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    IceCreamBlazorProd.Data.Employee emp = new IceCreamBlazorProd.Data.Employee();
+
+    protected void CreateEmployee()
+    {
+        empService.Create(emp);
+        navManager.NavigateTo("employees");
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("employees");
+    }
+
+}

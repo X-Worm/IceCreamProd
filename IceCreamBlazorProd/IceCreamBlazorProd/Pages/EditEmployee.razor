@@ -1,0 +1,84 @@
+﻿@page "/EditEmployee/{CurrentID}"
+@using IceCreamBlazorProd.Data
+@inject EmployeesService empService;
+@inject NavigationManager navManager
+
+<h2>Update Employee</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="EmployeeId" class="custom-control-label">Employee id</label>
+                <input for="EmployeeId" class="form-control" @bind="@emp.EmployeeId" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="custom-control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@emp.Name" />
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="LastName" class="custom-control-label">Last Name</label>
+                <input form="LastName" class="form-control" @bind="@emp.LastName" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="Age" class="custom-control-label">Age</label>
+                <input form="Age" class="form-control" @bind="@emp.Age" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="Position" class="custom-control-label">Position</label>
+                <input form="Position" class="form-control" @bind="@emp.Position" />
+            </div>
+
+            <div class="form-group">
+                <label for="Salary" class="custom-control-label">Salary</label>
+                <input form="Salary" class="form-control" @bind="@emp.Salary" />
+            </div>
+
+            <div class="form-group">
+                <label for="BirthDate" class="custom-control-label">Birth date</label>
+                <input form="BirthDate" class="form-control" @bind="@emp.BirthDate" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@UpdateEmployee" value="Update" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@code {
+
+    [Parameter]
+    public string CurrentID { get; set; }
+
+    IceCreamBlazorProd.Data.Employee emp = new IceCreamBlazorProd.Data.Employee();
+
+    protected override async Task OnInitializedAsync()
+    {
+        emp = await Task.Run(() => empService.GetById(Convert.ToInt32(CurrentID)));
+    }
+
+
+    protected void UpdateEmployee()
+    {
+        empService.Update(emp);
+        navManager.NavigateTo("employees");
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("employees");
+    }
+
+}
